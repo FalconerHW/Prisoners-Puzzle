@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
+#include <math.h>
 #include <time.h>
 #include "boxes.h"
 #include "search.h"
@@ -14,11 +15,14 @@
 // Validates the inputs
 int validInputs(char *argv[]);
 
+// checks a value is a perfect sqaure
+int isPerfectSquare(int value);
+
 
 // This program takes in 3 parametres:
 //  - Method (Loop or Random selection)
+//  - Number of prisoners (Must be a perfect square)
 //  - Number of trials
-//  - Number of prisoners
 // It will then print the rate of success and the number of successful
 // escapes.
 
@@ -52,6 +56,7 @@ int main(int argc, char *argv[]) {
 
             // Run the given method and count the success of required
             int *results = fn(boxes, numPrisoners);
+            showResults(results, numPrisoners);
             int succ = success(results, numPrisoners);
             count += succ;
 
@@ -63,7 +68,6 @@ int main(int argc, char *argv[]) {
             free(boxes);
         }
     }
-
     printf("Rate of success is: %0.4lf%%\n", 100 * ratio);
     printf("Number of successes was %d/%d\n", count, trials);
     return 0;
@@ -74,16 +78,26 @@ int validInputs(char *argv[]) {
         printf("You didn't enter a valid method\n");
         return INVALID;
     }
-    
+
     if (!isdigit(*argv[2])) {
-        printf("You must enter a valid number of trials\n");
+        printf("You must enter a valid number of prisoners\n");
+        return INVALID;
+    }
+    if (!isPerfectSquare(atoi(argv[2]))) {
+        printf("Number of prisoners must be a perfect square\n");
         return INVALID;
     }
 
     if (!isdigit(*argv[3])) {
-        printf("You must enter a valid number of prisoners\n");
+        printf("You must enter a valid number of trials\n");
         return INVALID;
     }
 
     return VALID;
+}
+
+int isPerfectSquare(int value) {
+    int intVal = sqrt(value);
+    double dblVal = (double)sqrt(value);
+    return intVal == dblVal;
 }

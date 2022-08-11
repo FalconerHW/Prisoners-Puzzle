@@ -9,8 +9,8 @@
 int *createBoxes(int seed, int size) {
     srand(seed);
 
-    int *prisoners = malloc((size + 1) * sizeof (int));
-    int *boxes = malloc((size + 1) * sizeof (int));
+    int *prisoners = malloc((size + 2) * sizeof (int));
+    int *boxes = malloc((size + 2) * sizeof (int));
 
     initialiseArray(prisoners, (size + 1));
 
@@ -23,7 +23,7 @@ int *createBoxes(int seed, int size) {
 
 void printBoxes(int *boxes, int size) {
     for (int i = 1; i < size + 1; i++) {
-        if ((i - 1) % (int)sqrt((double)size) == 0 && i > 1)
+        if ((i - 1) % (int)sqrt(size) == 0 && i > 1)
             printf("\n");
         
         printf("%d", boxes[i]);
